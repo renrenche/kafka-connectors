@@ -72,8 +72,7 @@ public class MySqlSinkClickHouseConnector extends SinkConnector {
         config.define(CLICKHOUSE_SINK_TABLES, ConfigDef.Type.STRING, "",
                 ConfigDef.Importance.LOW, "写到ClickHouse的分布式表名, 多个以逗号分隔" +
                         " 1.当此参数为空时, 所有topic数据都将写至对应MySQL的表名中; " +
-                        " 2.当此参数不为空且仅为单个表名时, 所有topic数据都将写至该表中; " +
-                        " 3.当此参数不为空且不为单个表名时, 其值应与topic个数一一对应, 对应topic将写至对应的表中");
+                        " 2.当此参数不为空时, 其值应与topic个数一一对应, 对应topic将写至对应的表中");
         config.define(CLICKHOUSE_SINK_LOCAL_TABLES, ConfigDef.Type.STRING, "",
                 ConfigDef.Importance.LOW, "写到ClickHouse的本地表名, 多个以逗号分隔" +
                         " 1.当此参数为空时, 将默认认为本地表名为分布式表加_local, 如: 分布式表为hello_ck, 则默认认为本地表名为hello_ck_local" +
