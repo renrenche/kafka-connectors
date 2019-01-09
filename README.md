@@ -23,7 +23,8 @@
    | clickhouse.sink.date.columns | | 是 | 同步至 ClickHouse 的表的时间分区字段，个数应与 topic 一致|
    | clickhouse.source.date.columns | 默认取当前时间 | 否 | 指定写至ClickHouse分区字段的值的取值的字段，该值应存在在所选输入数据的topic的schema中，个数应与 topic 一致|
    | clickhouse.source.date.format | yyyy-MM-dd HH:mm:ss | 否| 指定clickhouse.source.date.columns改字段的日期format方式，个数应与 topic 一致|
-   | clickhouse.optimize | true | 否 | 是否需要执行optimize本地表 |
+   | clickhouse.optimize | true | 否 | 是否需要执行optimize本地表 |  
+   
   注：ClickHouse 在实践中需手动建表，不支持自动建表，在实践中一般使用 MergeTree 系列引擎加 Distributed 引擎。
    
 ## 3.json-sink-clickhouse插件
@@ -42,7 +43,8 @@
   | clickhouse.sink.date.columns | | 是 | 同步至 ClickHouse 的表的时间分区字段，个数应与 topic 一致|
   | clickhouse.source.date.columns | 默认取当前时间 | 否 | 指定写至ClickHouse分区字段的值的取值的字段，该值应存在在所选输入数据的topic的schema中，个数应与 topic 一致|
   | clickhouse.source.date.format | yyyy-MM-dd HH:mm:ss | 否| 指定clickhouse.source.date.columns改字段的日期format方式，个数应与 topic 一致|
-  | clickhouse.optimize | false | 否 | 是否需要执行optimize本地表 |
+  | clickhouse.optimize | false | 否 | 是否需要执行optimize本地表 |  
+  
   注：ClickHouse 在实践中需手动建表，不支持自动建表，在实践中一般使用 MergeTree 系列引擎加 Distributed 引擎。
 
 ## 4.connector-test模块
