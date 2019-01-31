@@ -29,15 +29,17 @@ public class JdbcDataSource {
             dataSource.setPassword(config.getPassword());
             dataSource.setUrl(jdbcUrl);
             // 初始的连接数
-            dataSource.setInitialSize(10);
+            dataSource.setInitialSize(3);
             // 最大连接数
-            dataSource.setMaxTotal(50);
+            dataSource.setMaxTotal(10);
             // 设置最大空闲连接
-            dataSource.setMaxIdle(30);
+            dataSource.setMaxIdle(5);
             // 设置最大等待时间
             dataSource.setMaxWaitMillis(20000);
             // 设置最小空闲连接
-            dataSource.setMinIdle(10);
+            dataSource.setMinIdle(3);
+            dataSource.setTestWhileIdle(true);
+            dataSource.setConnectionProperties("keepAliveTimeout=10000;");
             dataSourceMap.put(jdbcUrl, dataSource);
             logger.info("jdbc连接, jdbcUrl: " + jdbcUrl);
         }

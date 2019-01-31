@@ -236,7 +236,7 @@ public class MySqlSinkClickHouseTask extends SinkTask {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> jsonMap = new HashMap<>(16);
         if (struct == null) {
-            logger.warn(String.format("fieldName: %s, struct 为空", inField));
+            logger.debug(String.format("fieldName: %s, struct 为空", inField));
             return jsonMap;
         }
         List<Field> fields = struct.schema().fields();
