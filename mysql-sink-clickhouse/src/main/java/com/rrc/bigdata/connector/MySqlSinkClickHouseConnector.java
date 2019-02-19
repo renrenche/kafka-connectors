@@ -10,7 +10,6 @@ import org.apache.kafka.connect.sink.SinkConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.SQLException;
 import java.util.*;
 
 import static com.rrc.bigdata.constant.CommonConstant.*;
@@ -56,11 +55,7 @@ public class MySqlSinkClickHouseConnector extends SinkConnector {
         JdbcDataSource dataSource = ClickHouseConfigDef.clickHouseConnectValidate(configValues);
         tableValidate(dataSource, connectorConfigs, configValues);
         if (dataSource != null) {
-            try {
-                dataSource.close();
-            } catch (SQLException e) {
-                logger.error("关闭连接失败: ", e);
-            }
+            dataSource.close();
         }
         return new Config(new LinkedList<>(configValues.values()));
     }

@@ -86,22 +86,18 @@ public class ClickHouseConfigDef {
         if (hosts.errorMessages().isEmpty() && port.errorMessages().isEmpty() && sinkDb.errorMessages().isEmpty()) {
             JdbcConnectConfig connectConfig = JdbcConnectConfig.initCkConnectConfig((String) hosts.value(), (String) port.value(),
                     user == null ? "" : (String) user.value(), password == null ? "" : (String) password.value());
-            dataSource = new JdbcDataSource(connectConfig);
             try {
+                dataSource = new JdbcDataSource(connectConfig);
                 List<String> databases = dataSource.showDatabases();
                 String db = (String) sinkDb.value();
                 if (!databases.contains(db)) {
                     sinkDb.addErrorMessage(String.format("%s数据库不存在", (String) sinkDb.value()));
                 }
+                dataSource.close();
+                dataSource = null;
             } catch (Exception e) {
                 logger.error("校验ClickHouse连接失败: ", e);
                 hosts.addErrorMessage("连接ClickHouse失败, " + e.getMessage());
-                try {
-                    dataSource.close();
-                    dataSource = null;
-                } catch (SQLException e1) {
-                    logger.error("关闭ClickHouse连接失败: ", e1);
-                }
             }
         }
         return dataSource;
