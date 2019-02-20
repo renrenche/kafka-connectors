@@ -54,7 +54,12 @@ public class JsonSinkClickHouseTask extends SinkTask {
         String password = props.get(CLICKHOUSE_JDBC_PASSWORD);
         sinkDb = props.get(CLICKHOUSE_SINK_DATABASE);
         JdbcConnectConfig connectConfig = JdbcConnectConfig.initCkConnectConfig(hosts, port, user, password);
-        dataSource = new JdbcDataSource(connectConfig);
+        try {
+            dataSource = new JdbcDataSource(connectConfig);
+        } catch (SQLException e) {
+            logger.error("创建ClickHouse连接失败, ", e);
+            throw new ConfigException(e.getMessage());
+        }
         String inOptimize = props.get(CLICKHOUSE_OPTIMIZE);
         if (inOptimize != null && BOOLEAN_TRUE.equals(inOptimize.toLowerCase())) {
             optimize = true;
@@ -96,12 +101,8 @@ public class JsonSinkClickHouseTask extends SinkTask {
     @Override
     public void stop() {
         if (dataSource != null) {
-            try {
-                dataSource.close();
-                logger.info("关闭ClickHouse连接成功");
-            } catch (SQLException e) {
-                logger.error("关闭ClickHouse连接失败, ", e);
-            }
+            dataSource.close();
+            logger.info("关闭ClickHouse连接成功");
         }
     }
 

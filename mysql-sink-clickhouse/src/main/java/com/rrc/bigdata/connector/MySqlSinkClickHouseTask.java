@@ -55,7 +55,12 @@ public class MySqlSinkClickHouseTask extends SinkTask {
         String password = props.get(CLICKHOUSE_JDBC_PASSWORD);
         sinkDb = props.get(CLICKHOUSE_SINK_DATABASE);
         JdbcConnectConfig connectConfig = JdbcConnectConfig.initCkConnectConfig(hosts, port, user, password);
-        dataSource = new JdbcDataSource(connectConfig);
+        try {
+            dataSource = new JdbcDataSource(connectConfig);
+        } catch (SQLException e) {
+            logger.error("创建ClickHouse连接失败, ", e);
+            throw new ConfigException(e.getMessage());
+        }
         logger.info("start task, 开始连接ClickHouse");
         String inOptimize = props.get(CLICKHOUSE_OPTIMIZE);
         if (inOptimize != null && BOOLEAN_FALSE.equals(inOptimize.toLowerCase())) {
@@ -93,12 +98,8 @@ public class MySqlSinkClickHouseTask extends SinkTask {
     @Override
     public void stop() {
         if (dataSource != null) {
-            try {
-                dataSource.close();
-                logger.info("关闭ClickHouse连接成功");
-            } catch (SQLException e) {
-                logger.error("关闭ClickHouse连接失败, ", e);
-            }
+            dataSource.close();
+            logger.info("关闭ClickHouse连接成功");
         }
     }
 
@@ -236,7 +237,7 @@ public class MySqlSinkClickHouseTask extends SinkTask {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> jsonMap = new HashMap<>(16);
         if (struct == null) {
-            logger.warn(String.format("fieldName: %s, struct 为空", inField));
+            logger.debug(String.format("fieldName: %s, struct 为空", inField));
             return jsonMap;
         }
         List<Field> fields = struct.schema().fields();
