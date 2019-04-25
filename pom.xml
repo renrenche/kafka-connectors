@@ -6,7 +6,7 @@
 
     <groupId>com.rrc.bigdata</groupId>
     <artifactId>kafka-connectors</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>kafka-connectors</name>
     <packaging>pom</packaging>
 
@@ -14,7 +14,7 @@
         <module>mysql-sink-clickhouse</module>
         <module>connector-common</module>
         <module>json-sink-clickhouse</module>
-        <module>connector-test</module>
+       <!-- <module>connector-test</module>-->
     </modules>
 
     <properties>
